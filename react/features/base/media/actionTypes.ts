@@ -90,7 +90,7 @@ export const STORE_VIDEO_TRANSFORM = 'STORE_VIDEO_TRANSFORM';
  *     blocked: boolean
  * }
  */
- export const SET_VIDEO_UNMUTE_PERMISSIONS = 'SET_VIDEO_UNMUTE_PERMISSIONS';
+export const SET_VIDEO_UNMUTE_PERMISSIONS = 'SET_VIDEO_UNMUTE_PERMISSIONS';
 
 /**
  * The type of (redux) action to toggle the local video camera facing mode. In
@@ -103,3 +103,6 @@ export const STORE_VIDEO_TRANSFORM = 'STORE_VIDEO_TRANSFORM';
  * }
  */
 export const TOGGLE_CAMERA_FACING_MODE = 'TOGGLE_CAMERA_FACING_MODE';
+
+
+export const SET_TORCH_ACTIVE = "SET_TORCH_ACTIVE";

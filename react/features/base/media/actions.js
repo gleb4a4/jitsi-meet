@@ -2,6 +2,7 @@
 
 import type { Dispatch } from 'redux';
 
+
 import { showModeratedNotification } from '../../av-moderation/actions';
 import { shouldShowModeratedNotification } from '../../av-moderation/functions';
 import { isModerationNotificationDisplayed } from '../../notifications';
@@ -16,7 +17,7 @@ import {
     SET_VIDEO_MUTED,
     SET_VIDEO_UNMUTE_PERMISSIONS,
     STORE_VIDEO_TRANSFORM,
-    TOGGLE_CAMERA_FACING_MODE
+    TOGGLE_CAMERA_FACING_MODE, SET_TORCH_ACTIVE
 } from './actionTypes';
 import {
     MEDIA_TYPE,
@@ -104,10 +105,10 @@ export function setCameraFacingMode(cameraFacingMode: string) {
  * @returns {Function}
  */
 export function setScreenshareMuted(
-        muted: boolean,
-        mediaType: MediaType = MEDIA_TYPE.SCREENSHARE,
-        authority: number = SCREENSHARE_MUTISM_AUTHORITY.USER,
-        ensureTrack: boolean = false) {
+    muted: boolean,
+    mediaType: MediaType = MEDIA_TYPE.SCREENSHARE,
+    authority: number = SCREENSHARE_MUTISM_AUTHORITY.USER,
+    ensureTrack: boolean = false) {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const state = getState();
 
@@ -165,10 +166,10 @@ export function setVideoAvailable(available: boolean) {
  * @returns {Function}
  */
 export function setVideoMuted(
-        muted: boolean,
-        mediaType: string = MEDIA_TYPE.VIDEO,
-        authority: number = VIDEO_MUTISM_AUTHORITY.USER,
-        ensureTrack: boolean = false) {
+    muted: boolean,
+    mediaType: string = MEDIA_TYPE.VIDEO,
+    authority: number = VIDEO_MUTISM_AUTHORITY.USER,
+    ensureTrack: boolean = false) {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const state = getState();
 
@@ -194,6 +195,18 @@ export function setVideoMuted(
             muted: newValue
         });
     };
+}
+export function toggleFlashlight(active){
+    return(dispatch: Dispatch<any>, getState: Function) => {
+        const state = getState()
+
+        const newValue = state['features/base/media'].torch.active
+
+        return dispatch({
+            type: SET_TORCH_ACTIVE,
+            active: !newValue
+        })
+    }
 }
 
 /**
