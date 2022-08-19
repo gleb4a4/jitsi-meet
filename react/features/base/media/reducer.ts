@@ -1,10 +1,13 @@
+// @ts-ignore
+import Torch from 'react-native-torch';
 import { combineReducers } from 'redux';
 
 import { CONFERENCE_FAILED, CONFERENCE_LEFT } from '../conference/actionTypes';
 import ReducerRegistry from '../redux/ReducerRegistry';
 import { TRACK_REMOVED } from '../tracks/actionTypes';
+
+
 // @ts-ignore
-import Torch from 'react-native-torch';
 import {
     SET_AUDIO_AVAILABLE,
     SET_AUDIO_MUTED,
@@ -21,27 +24,35 @@ import {
 import { CAMERA_FACING_MODE, SCREENSHARE_MUTISM_AUTHORITY } from './constants';
 
 
-
-/**
+/** ..............................
  * Initial state for torch.
  *
  *
  */
-export const _FLASHLIGHT_INITIAL_STATE = {
-    active: false,
+const _FLASHLIGHT_INITIAL_STATE = {
+    active: false
 };
 
-function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
+// eslint-disable-next-line valid-jsdoc
+/**
+ * Media state object for local audio.
+ *
+ * @typedef {Object} AudioMediaState
+ * @property {boolean} muted=false - Audio muted state.
+ */
+function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any) {
     switch (action.type) {
-        case SET_TORCH_ACTIVE:
-            Torch.switchState(action.active)
-            return {
-                ...state,
-                active: action.active
-            };
-    }
+    case SET_TORCH_ACTIVE:
+        Torch.switchState(action.active);
 
-    /**
+        return {
+            ...state,
+            active: action.active
+        };
+    }
+}
+
+/**
      * Media state object for local audio.
      *
      * @typedef {Object} AudioMediaState
@@ -52,18 +63,18 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
 // feature base/media and used in multiple files so it should be in
 // constants.js. Practically though, AudioMediaState would then be used in
 // multiple files as well so I don't know where and how to move it.
-    /**
+/**
      * Initial state for local audio.
      *
      * @type {AudioMediaState}
      */
-    export const _AUDIO_INITIAL_MEDIA_STATE = {
-        available: true,
-        unmuteBlocked: false,
-        muted: false
-    };
+const _AUDIO_INITIAL_MEDIA_STATE = {
+    available: true,
+    unmuteBlocked: false,
+    muted: false
+};
 
-    /**
+/**
      * Reducer for audio media state.
      *
      * @param {AudioMediaState} state - Media state of local audio.
@@ -72,32 +83,32 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
      * @private
      * @returns {AudioMediaState}
      */
-    function _audio(state: IAudioState = _AUDIO_INITIAL_MEDIA_STATE, action: any) {
-        switch (action.type) {
-            case SET_AUDIO_AVAILABLE:
-                return {
-                    ...state,
-                    available: action.available
-                };
+function _audio(state: IAudioState = _AUDIO_INITIAL_MEDIA_STATE, action: any) {
+    switch (action.type) {
+    case SET_AUDIO_AVAILABLE:
+        return {
+            ...state,
+            available: action.available
+        };
 
-            case SET_AUDIO_MUTED:
-                return {
-                    ...state,
-                    muted: action.muted
-                };
+    case SET_AUDIO_MUTED:
+        return {
+            ...state,
+            muted: action.muted
+        };
 
-            case SET_AUDIO_UNMUTE_PERMISSIONS:
-                return {
-                    ...state,
-                    unmuteBlocked: action.blocked
-                };
+    case SET_AUDIO_UNMUTE_PERMISSIONS:
+        return {
+            ...state,
+            unmuteBlocked: action.blocked
+        };
 
-            default:
-                return state;
-        }
+    default:
+        return state;
     }
+}
 
-    /**
+/**
      * Media state object for local screenshare.
      *
      * @typedef {Object} ScreenshareMediaState
@@ -106,18 +117,18 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
      * @property {boolean} unmuteBlocked=false - Screenshare unmute blocked state.
      */
 
-    /**
+/**
      * Initial state for video.
      *
      * @type {ScreenshareMediaState}
      */
-    export const _SCREENSHARE_INITIAL_MEDIA_STATE = {
-        available: true,
-        muted: SCREENSHARE_MUTISM_AUTHORITY.USER,
-        unmuteBlocked: false
-    };
+const _SCREENSHARE_INITIAL_MEDIA_STATE = {
+    available: true,
+    muted: SCREENSHARE_MUTISM_AUTHORITY.USER,
+    unmuteBlocked: false
+};
 
-    /**
+/**
      * Reducer for screenshare media state.
      *
      * @param {VideoMediaState} state - Media state of local screenshare.
@@ -126,26 +137,26 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
      * @private
      * @returns {ScreenshareMediaState}
      */
-    function _screenshare(state: IScreenshareState = _SCREENSHARE_INITIAL_MEDIA_STATE, action: any) {
-        switch (action.type) {
-            case SET_SCREENSHARE_MUTED:
-                return {
-                    ...state,
-                    muted: action.muted
-                };
+function _screenshare(state: IScreenshareState = _SCREENSHARE_INITIAL_MEDIA_STATE, action: any) {
+    switch (action.type) {
+    case SET_SCREENSHARE_MUTED:
+        return {
+            ...state,
+            muted: action.muted
+        };
 
-            case SET_VIDEO_UNMUTE_PERMISSIONS:
-                return {
-                    ...state,
-                    unmuteBlocked: action.blocked
-                };
+    case SET_VIDEO_UNMUTE_PERMISSIONS:
+        return {
+            ...state,
+            unmuteBlocked: action.blocked
+        };
 
-            default:
-                return state;
-        }
+    default:
+        return state;
     }
+}
 
-    /**
+/**
      * Media state object for local video.
      *
      * @typedef {Object} VideoMediaState
@@ -157,25 +168,25 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
 // feature base/media and used in multiple files so it should be in
 // constants.js. Practically though, VideoMediaState would then be used in
 // multiple files as well so I don't know where and how to move it.
-    /**
+/**
      * Initial state for video.
      *
      * @type {VideoMediaState}
      */
-    export const _VIDEO_INITIAL_MEDIA_STATE = {
-        available: true,
-        unmuteBlocked: false,
-        facingMode: CAMERA_FACING_MODE.USER,
-        muted: 0,
+const _VIDEO_INITIAL_MEDIA_STATE = {
+    available: true,
+    unmuteBlocked: false,
+    facingMode: CAMERA_FACING_MODE.USER,
+    muted: 0,
 
-        /**
+    /**
          * The video {@link Transform}s applied to {@code MediaStream}s by
          * {@code id} i.e. "pinch to zoom".
          */
-        transforms: {}
-    };
+    transforms: {}
+};
 
-    /**
+/**
      * Reducer for camera media state.
      *
      * @param {VideoMediaState} state - Media state of local video.
@@ -184,60 +195,60 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
      * @private
      * @returns {VideoMediaState}
      */
-    function _video(state: IVideoState = _VIDEO_INITIAL_MEDIA_STATE, action: any) {
-        switch (action.type) {
-            case CONFERENCE_FAILED:
-            case CONFERENCE_LEFT:
-                return _clearAllVideoTransforms(state);
+function _video(state: IVideoState = _VIDEO_INITIAL_MEDIA_STATE, action: any) {
+    switch (action.type) {
+    case CONFERENCE_FAILED:
+    case CONFERENCE_LEFT:
+        return _clearAllVideoTransforms(state);
 
-            case SET_CAMERA_FACING_MODE:
-                return {
-                    ...state,
-                    facingMode: action.cameraFacingMode
-                };
+    case SET_CAMERA_FACING_MODE:
+        return {
+            ...state,
+            facingMode: action.cameraFacingMode
+        };
 
-            case SET_VIDEO_AVAILABLE:
-                return {
-                    ...state,
-                    available: action.available
-                };
+    case SET_VIDEO_AVAILABLE:
+        return {
+            ...state,
+            available: action.available
+        };
 
-            case SET_VIDEO_MUTED:
-                return {
-                    ...state,
-                    muted: action.muted
-                };
+    case SET_VIDEO_MUTED:
+        return {
+            ...state,
+            muted: action.muted
+        };
 
-            case SET_VIDEO_UNMUTE_PERMISSIONS:
-                return {
-                    ...state,
-                    unmuteBlocked: action.blocked
-                };
+    case SET_VIDEO_UNMUTE_PERMISSIONS:
+        return {
+            ...state,
+            unmuteBlocked: action.blocked
+        };
 
-            case STORE_VIDEO_TRANSFORM:
-                return _storeVideoTransform(state, action);
+    case STORE_VIDEO_TRANSFORM:
+        return _storeVideoTransform(state, action);
 
-            case TOGGLE_CAMERA_FACING_MODE: {
-                let cameraFacingMode = state.facingMode;
+    case TOGGLE_CAMERA_FACING_MODE: {
+        let cameraFacingMode = state.facingMode;
 
-                cameraFacingMode
+        cameraFacingMode
                     = cameraFacingMode === CAMERA_FACING_MODE.USER
-                    ? CAMERA_FACING_MODE.ENVIRONMENT
-                    : CAMERA_FACING_MODE.USER;
+                ? CAMERA_FACING_MODE.ENVIRONMENT
+                : CAMERA_FACING_MODE.USER;
 
-                return {
-                    ...state,
-                    facingMode: cameraFacingMode
-                };
-            }
-
-            case TRACK_REMOVED:
-                return _trackRemoved(state, action);
-
-            default:
-                return state;
-        }
+        return {
+            ...state,
+            facingMode: cameraFacingMode
+        };
     }
+
+    case TRACK_REMOVED:
+        return _trackRemoved(state, action);
+
+    default:
+        return state;
+    }
+}
 
     interface IAudioState {
         available: boolean;
@@ -259,13 +270,13 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
         unmuteBlocked: boolean;
     }
 
-    export interface IMediaState {
+export interface IMediaState {
         audio: IAudioState;
         screenshare: IScreenshareState;
         video: IVideoState;
     }
 
-    /**
+/**
      * Listen for various actions related to media devices.
      *
      * @param {Object} state - State of media devices.
@@ -275,28 +286,28 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
      * modified.
      * @returns {Object}
      */
-    ReducerRegistry.register('features/base/media', combineReducers({
-        audio: _audio,
-        screenshare: _screenshare,
-        video: _video,
-        torch: _torch,
-    }));
+ReducerRegistry.register('features/base/media', combineReducers({
+    audio: _audio,
+    screenshare: _screenshare,
+    video: _video,
+    torch: _torch
+}));
 
-    /**
+/**
      * Removes all stored video {@link Transform}s.
      *
      * @param {Object} state - The {@code video} state of the feature base/media.
      * @private
      * @returns {Object}
      */
-    function _clearAllVideoTransforms(state: IVideoState) {
-        return {
-            ...state,
-            transforms: _VIDEO_INITIAL_MEDIA_STATE.transforms
-        };
-    }
+function _clearAllVideoTransforms(state: IVideoState) {
+    return {
+        ...state,
+        transforms: _VIDEO_INITIAL_MEDIA_STATE.transforms
+    };
+}
 
-    /**
+/**
      * Stores the last applied transform to a stream.
      *
      * @param {Object} state - The {@code video} state of the feature base/media.
@@ -304,17 +315,17 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
      * @private
      * @returns {Object}
      */
-    function _storeVideoTransform(state: IVideoState, { streamId, transform }: { streamId: string, transform: string }) {
-        return {
-            ...state,
-            transforms: {
-                ...state.transforms,
-                [streamId]: transform
-            }
-        };
-    }
+function _storeVideoTransform(state: IVideoState, { streamId, transform }: { streamId: string, transform: string }) {
+    return {
+        ...state,
+        transforms: {
+            ...state.transforms,
+            [streamId]: transform
+        }
+    };
+}
 
-    /**
+/**
      * Removes the stored video {@link Transform} associated with a
      * {@code MediaStream} when its respective track is removed.
      *
@@ -323,23 +334,30 @@ function _torch(state = _FLASHLIGHT_INITIAL_STATE, action:any){
      * @private
      * @returns {Object}
      */
-    function _trackRemoved(state: IVideoState, { track: { jitsiTrack } } : {track: {jitsiTrack: any}}) {
-        if (jitsiTrack) {
-            const streamId = jitsiTrack.getStreamId();
+function _trackRemoved(state: IVideoState, { track: { jitsiTrack } } : {track: {jitsiTrack: any}}) {
+    if (jitsiTrack) {
+        const streamId = jitsiTrack.getStreamId();
 
-            if (streamId && streamId in state.transforms) {
-                const nextTransforms: any = {
-                    ...state.transforms
-                };
+        if (streamId && streamId in state.transforms) {
+            const nextTransforms: any = {
+                ...state.transforms
+            };
 
-                delete nextTransforms[streamId];
+            delete nextTransforms[streamId];
 
-                return {
-                    ...state,
-                    transforms: nextTransforms
-                };
-            }
+            return {
+                ...state,
+                transforms: nextTransforms
+            };
         }
-
-        return state;
     }
+
+    return state;
+}
+
+export {
+    _AUDIO_INITIAL_MEDIA_STATE,
+    _VIDEO_INITIAL_MEDIA_STATE,
+    _FLASHLIGHT_INITIAL_STATE,
+    _SCREENSHARE_INITIAL_MEDIA_STATE
+};
